@@ -1,144 +1,112 @@
 package ru.martakov.tests;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
+
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import ru.martakov.pages.BasePage;
+import ru.martakov.util.DriverManager;
 
-import java.util.concurrent.TimeUnit;
 
-public class SberTest {
+public class SberTest extends BaseTest{
 
-    private WebDriver driver;
-    private WebDriverWait wait;
 
-    private final static String BASE_URL = "http://www.sberbank.ru/ru/person";
 
-    @Before
-    public void StartUp() {
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/drivers/chromedriver.exe");
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-        wait = new WebDriverWait(driver,10);
-        //Перейти по ссылка http://www.sberbank.ru/ru/person
-        driver.get(BASE_URL);
-    }
 
     @Test
     public void testScenario() {
+        BasePage basePage = new BasePage();
 
-        WebElement insurance = driver.findElement(By.xpath("//span[contains(text(), 'Страхование')]"));
-        insurance.click();
-        insurance.click();
-
-        String stringTravelInsurance = "//a[contains(text(), 'Страхование путешественников')]";
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(stringTravelInsurance)));
-
-        WebElement travelInsurance = driver.findElement(By.xpath(stringTravelInsurance));
-        travelInsurance.click();
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[contains(text(), 'для получения визы')]")));
-        WebElement issueOnline = driver.findElement(By.xpath("//a[@href='/dl/travel_ins']"));
-        issueOnline.click();
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(), 'Выбор полиса')]")));
-        WebElement minimumAmount = driver.findElement(By.xpath("//p[contains(text(), 'Необходимый минимум для оплаты медицинской помощи за границей')]"));
-        minimumAmount.click();
+        basePage.doubleClickTextOfTagSpan("Страхование");
 
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(text(), 'Оформить')]")));
-        WebElement arrange = driver.findElement(By.xpath("//button[contains(text(), 'Оформить')]"));
-        arrange.click();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@id='surname_vzr_ins_0']")));
+        basePage.visibilityTextOfTagA("Страхование путешественников");
+        basePage.clickTextOfTagA("Страхование путешественников");
+
+
+        basePage.visibilityTextOfTagH3("для получения визы");
+        basePage.clickHrefOfTagA("/dl/travel_ins");
+
+        basePage.visibilityTextOfTagA("Выбор полиса");
+        basePage.clickTextOfTagP("Необходимый минимум для оплаты медицинской помощи за границей");
+
+        basePage.clickableTextOfTagButton("Оформить");
+        basePage.clickTextOfTagButton("Оформить");
+
+        basePage.clickableIdOfTagInput("surname_vzr_ins_0");
 
         String stringSurname = "Иванов";
-        WebElement surname = driver.findElement(By.xpath("//input[@id='surname_vzr_ins_0']"));
-        surname.sendKeys(stringSurname);
+        String sendKeysSurname = "surname_vzr_ins_0";
+        basePage.sendKeysIdOfTagInput(stringSurname, sendKeysSurname);
+
 
         String stringName = "Иван";
-        WebElement name = driver.findElement(By.xpath("//input[@id='name_vzr_ins_0']"));
-        name.sendKeys(stringName);
+        String sendKeysName = "name_vzr_ins_0";
+        basePage.sendKeysIdOfTagInput(stringName,sendKeysName);
 
         String stringDateBirth = "01.01.1993";
-        WebElement dateBirth = driver.findElement(By.xpath("//input[@id='birthDate_vzr_ins_0']"));
-        dateBirth.sendKeys(stringDateBirth);
-        name.click();
+        String sendKeysDateBirth = "birthDate_vzr_ins_0";
+        basePage.sendKeysDateIdOfTagInput(stringDateBirth, sendKeysDateBirth);
 
         String stringSurnameInsured = "Иванов";
-        WebElement surnameInsured = driver.findElement(By.xpath("//input[@id='person_lastName']"));
-        surnameInsured.sendKeys(stringSurnameInsured);
+        String sendKeysSurnameInsured = "person_lastName";
+        basePage.sendKeysIdOfTagInput(stringSurnameInsured, sendKeysSurnameInsured);
 
         String stringNameInsured = "Иван";
-        WebElement nameInsured = driver.findElement(By.xpath("//input[@id='person_firstName']"));
-        nameInsured.sendKeys(stringNameInsured);
+        String senKeysNameInsured = "person_firstName";
+        basePage.sendKeysIdOfTagInput(stringNameInsured, senKeysNameInsured);
 
         String stringMiddleNameInsured = "Иванович";
-        WebElement middleNameInsured = driver.findElement(By.xpath("//input[@id='person_middleName']"));
-        middleNameInsured.sendKeys(stringMiddleNameInsured);
+        String senKeysMiddleNameInsured = "person_middleName";
+        basePage.sendKeysIdOfTagInput(stringMiddleNameInsured, senKeysMiddleNameInsured);
+
 
         String stringDateBirthInsured = "01.01.1993";
-        WebElement dateBirthInsured = driver.findElement(By.xpath("//input[@id='person_birthDate']"));
-        dateBirthInsured.sendKeys(stringDateBirthInsured);
-        middleNameInsured.click();
+        String sendKeysDateBirthInsured = "person_birthDate";
+        basePage.sendKeysDateIdOfTagInput(stringDateBirthInsured, sendKeysDateBirthInsured);
 
-        WebElement female = driver.findElement(By.xpath("//label[contains(text(), 'Женский')]"));
-        female.click();
+        basePage.clickTextOfTagLabel("Женский");
+
+
 
         String stringPassportSeries = "4444";
-        WebElement passportSeries = driver.findElement(By.xpath("//input[@id='passportSeries']"));
-        passportSeries.sendKeys(stringPassportSeries);
+        String sendKeysPassportSeries = "passportSeries";
+        basePage.sendKeysIdOfTagInput(stringPassportSeries, sendKeysPassportSeries);
 
         String stringPassportNumber = "666666";
-        WebElement passportNumber = driver.findElement(By.xpath("//input[@id='passportNumber']"));
-        passportNumber.sendKeys(stringPassportNumber);
+        String sendKeysPassportNumber = "passportNumber";
+        basePage.sendKeysIdOfTagInput(stringPassportNumber, sendKeysPassportNumber);
 
         String stringPassportDate = "01.01.2016";
-        WebElement passportDate = driver.findElement(By.xpath("//input[@id='documentDate']"));
-        passportDate.sendKeys(stringPassportDate);
-        passportNumber.click();
+        String sendKeysPassportDate = "documentDate";
+        basePage.sendKeysDateIdOfTagInput(stringPassportDate, sendKeysPassportDate);
 
         String stringPassportIssue = "УФМС";
-        WebElement passportIssue = driver.findElement(By.xpath("//input[@id='documentIssue']"));
-        passportIssue.sendKeys(stringPassportIssue);
+        String sendKeysPassportIssue = "documentIssue";
+        basePage.sendKeysIdOfTagInput(stringPassportIssue,sendKeysPassportIssue);
 
-        wait.until(ExpectedConditions.attributeContains(surname, "value", stringSurname));
-        wait.until(ExpectedConditions.attributeContains(name, "value", stringName));
-        wait.until(ExpectedConditions.attributeContains(dateBirth, "value", stringDateBirth));
-        wait.until(ExpectedConditions.attributeContains(surnameInsured, "value", stringSurnameInsured));
-        wait.until(ExpectedConditions.attributeContains(nameInsured, "value", stringNameInsured));
-        wait.until(ExpectedConditions.attributeContains(middleNameInsured, "value", stringMiddleNameInsured));
-        wait.until(ExpectedConditions.attributeContains(dateBirthInsured, "value", stringDateBirthInsured));
-        wait.until(ExpectedConditions.attributeContains(female, "class", "btn ng-valid active ng-touched ng-dirty"));
-        wait.until(ExpectedConditions.attributeContains(passportSeries, "value", stringPassportSeries));
-        wait.until(ExpectedConditions.attributeContains(passportNumber, "value", stringPassportNumber));
-        wait.until(ExpectedConditions.attributeContains(passportDate, "value", stringPassportDate));
-        wait.until(ExpectedConditions.attributeContains(passportIssue, "value", stringPassportIssue));
+        basePage.attributeValueOfTagInput(sendKeysSurname,stringSurname);
+        basePage.attributeValueOfTagInput(sendKeysName, stringName);
+        basePage.attributeValueOfTagInput(sendKeysDateBirth, stringDateBirth);
+        basePage.attributeValueOfTagInput(sendKeysSurnameInsured, stringSurnameInsured);
+        basePage.attributeValueOfTagInput(senKeysNameInsured, stringNameInsured);
+        basePage.attributeValueOfTagInput(senKeysMiddleNameInsured, stringMiddleNameInsured);
+        basePage.attributeValueOfTagInput(sendKeysDateBirthInsured, stringDateBirthInsured);
+        basePage.attributeButtonOfClass("Женский", "btn ng-valid active ng-touched ng-dirty");
+        basePage.attributeValueOfTagInput(sendKeysPassportSeries, stringPassportSeries);
+        basePage.attributeValueOfTagInput(sendKeysPassportNumber, stringPassportNumber);
+        basePage.attributeValueOfTagInput(sendKeysPassportDate, stringPassportDate);
+        basePage.attributeValueOfTagInput(sendKeysPassportIssue, stringPassportIssue);
 
 
-        WebElement proceed = driver.findElement(By.xpath("//button[contains(text(), 'Продолжить')]"));
-        proceed.click();
-
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[contains(text(), 'При заполнении данных произошла ошибка')]")));
+        basePage.clickTextOfTagButton("Продолжить");
+        basePage.visibilityTextOfTagDiv("При заполнении данных произошла ошибка");
 
 
     }
 
-    @After
-    public void tearDown(){
-        //driver.quit();
-        //driver = null;
-    }
+
 
 
 }
